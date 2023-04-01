@@ -20,6 +20,7 @@ public class WhatsappRepository {
     private int messageId;
 
     public WhatsappRepository(){
+        this.messageListHashMap = new HashMap<>();
         this.groupMessageMap = new HashMap<Group, List<Message>>();
         this.groupUserMap = new HashMap<Group, List<User>>();
         this.senderMap = new HashMap<Message, User>();
@@ -59,12 +60,12 @@ public class WhatsappRepository {
     }
 
     public int createMessage(String content) {
-        this.messageId++;
+        messageId++;
 
-        Message message = new Message(this.messageId, content);
+        Message message = new Message(messageId, content);
         messageListHashMap.put(message, new ArrayList<>());
 
-        return this.messageId;
+        return messageListHashMap.size();
     }
 
     public int sendMessage(Message message, User sender, Group group) {
@@ -107,7 +108,7 @@ public class WhatsappRepository {
         }
 
         List<User> users = groupUserMap.get(group);
-        int exist = 0;
+        int exist = -1;
         for(int i=0; i<users.size(); i++) {
             if(users.get(i).equals(user)) {
                 exist = i;
